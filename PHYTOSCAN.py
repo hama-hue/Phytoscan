@@ -52,7 +52,7 @@ if uploaded_file:
     uploaded_file.seek(0) 
     b64_image = encode_image(uploaded_file)
 
-    max_calls = 1
+    max_calls = 5
     seconds = 600 #10 minutes
 
     if "api_call_times" not in st.session_state:
