@@ -9,7 +9,6 @@ API_KEY = os.getenv("PLANT_ID_API_KEY")
 
 if not API_KEY:
     st.error("API key not found. Make sure it's set in Streamlit secrets.")
-    return
 PLANT_ID_ENDPOINT = "https://api.plant.id/v2/identify"
 
 def encode_image(image_file):
