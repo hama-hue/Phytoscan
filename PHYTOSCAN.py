@@ -2,9 +2,14 @@ import streamlit as st
 from PIL import Image
 import requests
 import base64
+import os
 
 
-API_KEY = "CdIQtaQpAnkjj0th1neU2k1xKQ0PjXvs6CI2zexBTQ0X6YWt7p"
+API_KEY = os.getenv("PLANT_ID_API_KEY")
+
+if not API_KEY:
+    st.error("API key not found. Make sure it's set in Streamlit secrets.")
+    return
 PLANT_ID_ENDPOINT = "https://api.plant.id/v2/identify"
 
 def encode_image(image_file):
