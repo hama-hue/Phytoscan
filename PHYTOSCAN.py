@@ -1,6 +1,7 @@
 import streamlit as st
 from PIL import Image
 import requests
+import time
 import base64
 import os
 
@@ -51,9 +52,24 @@ if uploaded_file:
     uploaded_file.seek(0) 
     b64_image = encode_image(uploaded_file)
 
+    max_calls = 5
+    seconds = 600 #10 minutes
+
+    now = time.time()
+    call_times = st.session_state.get("api_call_times", [])
+    call_times = [t for t in call_times if now - t < seconds]
+
+    if len(call_times) >= max_calls:
+        st.warning("🚫 Rate limit exceeded: You can only make 5 identifications every 10 minutes.")
+        st.stop()
+
+    st.session_state["api_call_times"] = call_times
+    
     if st.button("🔍 Identify Leaf"):
         with st.spinner("Identifying plant..."):
             result = identify_plant(b64_image, API_KEY)
+            
+        st.session_state["api_call_times"].append(time.time())
 
         if result.get("suggestions"):
             flag = False
