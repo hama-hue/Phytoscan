@@ -5,16 +5,20 @@ import time
 import base64
 import os
 
+#Load API Key
 API_KEY = os.getenv("PLANT_ID_API_KEY")
 if not API_KEY:
     st.error("API Key not found. Please set the PLANT_ID_API_KEY environment variable.")
     st.stop()
-    
+
+# Plant.ID API endpoint
 PLANT_ID_ENDPOINT = "https://api.plant.id/v2/identify"
 
+#Encode Image to base64
 def encode_image(image_file):
     return base64.b64encode(image_file.read()).decode("utf-8")
 
+#Call the plant ID API
 def identify_plant(image_data_b64, api_key):
     headers = {
         "Content-Type": "application/json",
@@ -40,10 +44,11 @@ def identify_plant(image_data_b64, api_key):
         st.text(f"Raw response:\n{response.text}")
         return {}
 
-
+#Page Setup
 st.set_page_config(page_title="PhytoScan - Leaf Identifier", layout="centered")
 st.title("🌿 PhytoScan - Identify a Leaf and Discover Its Uses")
 
+#Image Upload
 uploaded_file = st.file_uploader("Upload a leaf image.",type=["jpg", "png"])
 
 if uploaded_file:
@@ -52,6 +57,7 @@ if uploaded_file:
     uploaded_file.seek(0) 
     b64_image = encode_image(uploaded_file)
 
+    #Rate limiting
     max_calls = 5
     seconds = 600 #10 minutes
 
@@ -62,6 +68,7 @@ if uploaded_file:
     call_times = [t for t in st.session_state["api_call_times"] if now - t < seconds]
     st.session_state["api_call_times"] = call_times
 
+    #Remaining calls
     st.info(f"You have {max_calls - len(st.session_state['api_call_times'])} identifications remaining in this 10-minute window.")
 
     if len(call_times) >= max_calls:
@@ -69,13 +76,15 @@ if uploaded_file:
         st.stop()
 
     st.session_state["api_call_times"] = call_times
-    
+
+    #Button to trigger identification
     if st.button("🔍 Identify Leaf"):
         with st.spinner("Identifying plant..."):
             result = identify_plant(b64_image, API_KEY)
             
         st.session_state["api_call_times"].append(time.time())
 
+        #Process API Response
         if result.get("suggestions"):
             flag = False
             for suggestion in result["suggestions"]:
@@ -86,6 +95,7 @@ if uploaded_file:
                     flag = True
                     st.success(f"🌿 Identified Plant: {plant_name} ({confidence*100:.2f}% confidence)")
 
+                    #Display Plant Details
                     details = suggestion.get("plant_details", {})
                     st.write(f"**Common Names**: {', '.join(details.get('common_names', []))}")
                     st.write(f"**Description**: {details.get('wiki_description', {}).get('value', 'No description available.')}")
