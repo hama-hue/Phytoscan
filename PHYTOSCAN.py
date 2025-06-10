@@ -52,12 +52,15 @@ if uploaded_file:
     uploaded_file.seek(0) 
     b64_image = encode_image(uploaded_file)
 
-    max_calls = 5
+    max_calls = 1
     seconds = 600 #10 minutes
 
+    if "api_call_times" not in st.session_state:
+        st.session_state["api_call_times"] = []
+
     now = time.time()
-    call_times = st.session_state.get("api_call_times", [])
-    call_times = [t for t in call_times if now - t < seconds]
+    call_times = [t for t in st.session_state["api_call_times"] if now - t < seconds]
+    st.session_state["api_call_times"] = call_times
 
     if len(call_times) >= max_calls:
         st.warning("🚫 Rate limit exceeded: You can only make 5 identifications every 10 minutes.")
