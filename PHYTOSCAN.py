@@ -62,6 +62,8 @@ if uploaded_file:
     call_times = [t for t in st.session_state["api_call_times"] if now - t < seconds]
     st.session_state["api_call_times"] = call_times
 
+    st.info(f"You have {max_calls - len(st.session_state['api_call_times'])} identifications remaining in this 10-minute window.")
+
     if len(call_times) >= max_calls:
         st.warning("🚫 Rate limit exceeded: You can only make 5 identifications every 10 minutes.")
         st.stop()
