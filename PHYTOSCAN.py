@@ -5,6 +5,10 @@ import base64
 import os
 
 API_KEY = os.getenv("PLANT_ID_API_KEY")
+if not API_KEY:
+    st.error("API Key not found. Please set the PLANT_ID_API_KEY environment variable.")
+    st.stop()
+    
 PLANT_ID_ENDPOINT = "https://api.plant.id/v2/identify"
 
 def encode_image(image_file):
