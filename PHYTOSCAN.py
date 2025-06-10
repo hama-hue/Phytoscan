@@ -4,7 +4,6 @@ import requests
 import base64
 import os
 
-
 API_KEY = os.getenv("PLANT_ID_API_KEY")
 PLANT_ID_ENDPOINT = "https://api.plant.id/v2/identify"
 
@@ -20,11 +19,7 @@ def identify_plant(image_data_b64, api_key):
         "images": [image_data_b64],
         "modifiers": ["crops_fast", "similar_images"],
         "plant_language": "en",
-        "plant_details": [
-            "common_names",
-            "url",
-            "wiki_description",
-        ]
+        "plant_details": ["common_names", "url", "wiki_description",]
     }
 
     response = requests.post(PLANT_ID_ENDPOINT, json=payload, headers=headers)
@@ -57,13 +52,13 @@ if uploaded_file:
             result = identify_plant(b64_image, API_KEY)
 
         if result.get("suggestions"):
-            found = False
+            flag = False
             for suggestion in result["suggestions"]:
                 confidence = suggestion.get("probability", 0)
                 plant_name = suggestion["plant_name"]
 
                 if confidence > 0.2:
-                    found = True
+                    flag = True
                     st.success(f"🌿 Identified Plant: {plant_name} ({confidence*100:.2f}% confidence)")
 
                     details = suggestion.get("plant_details", {})
@@ -73,7 +68,7 @@ if uploaded_file:
 
                     break
 
-            if not found:
+            if not flag:
                 st.warning("A plant was detected, but none of the suggestions were confident enough.")
         else:
             st.error("No plant detected in the image. Please try a clearer photo.")
