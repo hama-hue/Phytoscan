@@ -110,10 +110,10 @@ if uploaded_file:
                     st.write(f"**Description**: {details.get('wiki_description', {}).get('value', 'No description available.')}")
 
                     if details.get("common_uses"):
-                        st.write(f"**Common Uses**: {common_uses}")
+                        st.write(f"**Common Uses**: {details.get('common_uses', {})}")
 
                     if details.get("toxicity"):
-                        st.write(f"**Toxicity Info**: {toxicity}")
+                        st.write(f"**Toxicity Info**: {details.get('toxicity', {})}")
                     
                     if details.get("edible_parts"):
                         st.write(f"**Edible Parts**: {', '.join(details['edible_parts'])}")
