@@ -13,6 +13,8 @@ if not API_KEY:
 
 # Plant.ID API endpoint
 PLANT_ID_ENDPOINT = "https://api.plant.id/v2/identify"
+max_calls = 5
+seconds = 600 #10 minutes
 
 #Encode Image to base64
 def encode_image(image_file):
@@ -86,9 +88,6 @@ if uploaded_file:
     b64_image = encode_image(uploaded_file)
 
     #Rate limiting
-    max_calls = 5
-    seconds = 600 #10 minutes
-
     if "api_call_times" not in st.session_state:
         st.session_state["api_call_times"] = []
 
