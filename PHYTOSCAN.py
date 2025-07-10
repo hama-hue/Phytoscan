@@ -12,7 +12,7 @@ if not API_KEY:
     st.stop()
 
 # Plant.ID API endpoint
-PLANT_ID_ENDPOINT = "https://api.plant.id/v3/health-assessment"
+PLANT_ID_ENDPOINT = "https://api.plant.id/v2/identify"
 
 #Encode Image to base64
 def encode_image(image_file):
@@ -42,8 +42,7 @@ def identify_plant(image_data_b64, api_key):
     "sunlight",
     "soil",
     "conservation_status"
-],
-        "disease_details": ["common_names", "description", "treatment"]
+]
     }
 
     response = requests.post(PLANT_ID_ENDPOINT, json=payload, headers=headers)
@@ -130,25 +129,6 @@ if uploaded_file:
                             st.write(f"- {key.capitalize()}: {value}")
 
                     st.write(f"[More Info on Wikipedia]({details.get('url', '#')})")
-
-                    # Disease Detection
-                    disease_data = result.get("disease", {})
-                    is_healthy = disease_data.get("is_healthy", {}).get("probability", 0)
-
-                    if disease_data.get("suggestions"):
-                        st.subheader("🦠 Possible Diseases Detected")
-                        for disease in disease_data["suggestions"]:
-                            name = disease.get("name", "Unknown Disease")
-                            prob = disease.get("probability", 0)
-                            desc = disease.get("description", "No description available.")
-                            treatment = disease.get("treatment", "No treatment info available.")
-
-                            st.warning(f"⚠️ {name} ({prob*100:.2f}% confidence)")
-                            st.write(f"**Description**: {desc}")
-                            st.write(f"**Treatment**: {treatment}")
-                    else:
-                        st.success("✅ The plant appears to be perfectly healthy!")
-                        st.write(f"**Health Confidence**: {is_healthy*100:.2f}%")
 
                     break
 
