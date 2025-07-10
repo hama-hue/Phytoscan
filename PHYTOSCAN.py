@@ -20,6 +20,11 @@ seconds = 600 #10 minutes
 if "api_call_times" not in st.session_state:
     st.session_state["api_call_times"] = []
 
+#Scan History
+if "scan_history" not in st.session_state:
+    st.session_state["scan_history"] = []
+
+
 #Encode Image to base64
 def encode_image(image_file):
     return base64.b64encode(image_file.read()).decode("utf-8")
@@ -124,10 +129,7 @@ if uploaded_file:
                     flag = True
                     st.success(f"🌿 Identified Plant: {plant_name} ({confidence*100:.2f}% confidence)")
 
-                    # ✅ Save to scan history
-                    if "scan_history" not in st.session_state:
-                        st.session_state["scan_history"] = []
-
+                    # Save to scan history
                     st.session_state["scan_history"].append({
                         "plant": plant_name,
                         "confidence": confidence,
