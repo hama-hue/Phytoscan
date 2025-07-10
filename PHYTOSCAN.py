@@ -128,13 +128,6 @@ if uploaded_file:
                         for key, value in details["taxonomy"].items():
                             st.write(f"- {key.capitalize()}: {value}")
 
-                    for key in ["growth_habit", "propagation_methods", "distribution", "sunlight", "soil", "conservation_status"]:
-                        value = details.get(key)
-                        if value:
-                            if isinstance(value, list):
-                                st.write(f"**{key.replace('_', ' ').title()}**: {', '.join(value)}")
-                            else:
-                                st.write(f"**{key.replace('_', ' ').title()}**: {value}")
                     st.write(f"[More Info on Wikipedia]({details.get('url', '#')})")
 
 
