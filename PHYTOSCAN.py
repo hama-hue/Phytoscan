@@ -42,7 +42,7 @@ def identify_plant(image_data_b64, api_key):
     "sunlight",
     "soil",
     "conservation_status"
-]
+],
         "disease_details": ["common_names", "description", "treatment"]
     }
 
