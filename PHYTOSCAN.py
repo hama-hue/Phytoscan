@@ -141,6 +141,6 @@ if uploaded_file:
                     break
 
             if not flag:
-                st.warning("A plant was detected, but none of the suggestions were confident enough.")
+                st.warning("A plant was detected, but none of the suggestions were confident enough.Please try a clearer photo")
         else:
             st.error("No plant detected in the image. Please try a clearer photo.")
