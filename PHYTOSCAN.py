@@ -1,7 +1,8 @@
 import streamlit as st
 from PIL import Image
 import requests
-import time
+from datetime import datetime
+import pytz
 import base64
 import os
 
@@ -130,10 +131,13 @@ if uploaded_file:
                     st.success(f"🌿 Identified Plant: {plant_name} ({confidence*100:.2f}% confidence)")
 
                     # Save to scan history
+                    india_tz = pytz.timezone("Asia/Kolkata")
+                    local_time = datetime.now(india_tz).strftime("%H:%M:%S")
+
                     st.session_state["scan_history"].append({
                         "plant": plant_name,
                         "confidence": confidence,
-                        "timestamp": time.strftime("%H:%M:%S")
+                        "timestamp": local_time
                     })
 
                     #Display Plant Details
