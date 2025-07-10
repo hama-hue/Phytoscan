@@ -33,15 +33,9 @@ def identify_plant(image_data_b64, api_key):
     "url",
     "wiki_description",
     "edible_parts",
-    "medicinal_properties",
     "taxonomy",
-    "growth_habit",
-    "propagation_methods",
-    "distribution",
-    "watering",
-    "sunlight",
-    "soil",
-    "conservation_status"
+    "common_uses",
+    "toxicity" 
 ]
     }
 
@@ -114,14 +108,15 @@ if uploaded_file:
                     details = suggestion.get("plant_details", {})
                     st.write(f"**Common Names**: {', '.join(details.get('common_names', []))}")
                     st.write(f"**Description**: {details.get('wiki_description', {}).get('value', 'No description available.')}")
+
+                    if details.get("common_uses"):
+                        st.write(f"**Common Uses**: {common_uses}")
+
+                    if details.get("toxicity"):
+                        st.write(f"**Toxicity Info**: {toxicity}")
                     
                     if details.get("edible_parts"):
                         st.write(f"**Edible Parts**: {', '.join(details['edible_parts'])}")
-
-                    if details.get("medicinal_properties"):
-                        st.write("**Medicinal Properties**:")
-                        for prop in details["medicinal_properties"]:
-                            st.write(f"- {prop}")
 
                     if details.get("taxonomy"):
                         st.write("**Taxonomy**:")
