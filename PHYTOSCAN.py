@@ -57,6 +57,25 @@ def identify_plant(image_data_b64, api_key):
 st.set_page_config(page_title="PhytoScan - Leaf Identifier", layout="centered")
 st.title("🌿 PhytoScan - Identify a Leaf and Discover Its Uses")
 
+#Sidebar
+with st.sidebar:
+    st.header("🌿 PhytoScan Navigator")
+    st.markdown("Upload a leaf image and discover its species and practical insights.")
+
+    st.markdown("---")
+
+    st.subheader("📊 Scan History")
+    if "scan_history" in st.session_state:
+        for scan in st.session_state["scan_history"]:
+            st.write(f"- {scan['timestamp']}: {scan['plant']} ({scan['confidence']*100:.1f}%)")
+    else:
+        st.write("No scans yet.")
+
+    st.markdown("---")
+
+    st.subheader("🕒 Rate Limit")
+    st.write(f"Remaining scans: {max_calls - len(st.session_state['api_call_times'])}/5")
+
 #Image Upload
 uploaded_file = st.file_uploader("Upload a leaf image.",type=["jpg", "png"])
 
