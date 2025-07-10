@@ -132,7 +132,7 @@ if uploaded_file:
 
                     # Save to scan history
                     india_tz = pytz.timezone("Asia/Kolkata")
-                    local_time = datetime.now(india_tz).strftime("%H:%M:%S")
+                    local_time = datetime.now(india_tz).strftime("%I:%M:%S %p")
 
                     st.session_state["scan_history"].append({
                         "plant": plant_name,
