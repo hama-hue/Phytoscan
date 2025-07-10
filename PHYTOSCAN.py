@@ -113,7 +113,7 @@ if uploaded_file:
                     details = suggestion.get("plant_details", {})
                     st.write(f"**Common Names**: {', '.join(details.get('common_names', []))}")
                     st.write(f"**Description**: {details.get('wiki_description', {}).get('value', 'No description available.')}")
-                    st.write(f"[More Info on Wikipedia]({details.get('url', '#')})")
+                    
                     if details.get("edible_parts"):
                         st.write(f"**Edible Parts**: {', '.join(details['edible_parts'])}")
 
@@ -134,6 +134,7 @@ if uploaded_file:
                                 st.write(f"**{key.replace('_', ' ').title()}**: {', '.join(value)}")
                             else:
                                 st.write(f"**{key.replace('_', ' ').title()}**: {value}")
+                    st.write(f"[More Info on Wikipedia]({details.get('url', '#')})")
 
 
                     break
