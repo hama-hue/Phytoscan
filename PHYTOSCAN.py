@@ -49,6 +49,7 @@ def identify_plant(image_data_b64, api_key):
 
     if response.status_code != 200:
         st.error(f"API Error: {response.status_code} - {response.text}")
+        st.stop()
         return {}
 
     try:
