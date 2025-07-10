@@ -12,7 +12,7 @@ if not API_KEY:
     st.stop()
 
 # Plant.ID API endpoint
-PLANT_ID_ENDPOINT = "https://api.plant.id/v2/health-assessment"
+PLANT_ID_ENDPOINT = "https://api.plant.id/v3/health-assessment"
 
 #Encode Image to base64
 def encode_image(image_file):
