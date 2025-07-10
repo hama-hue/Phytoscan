@@ -124,6 +124,16 @@ if uploaded_file:
                     flag = True
                     st.success(f"🌿 Identified Plant: {plant_name} ({confidence*100:.2f}% confidence)")
 
+                    # ✅ Save to scan history
+                    if "scan_history" not in st.session_state:
+                        st.session_state["scan_history"] = []
+
+                    st.session_state["scan_history"].append({
+                        "plant": plant_name,
+                        "confidence": confidence,
+                        "timestamp": time.strftime("%H:%M:%S")
+                    })
+
                     #Display Plant Details
                     details = suggestion.get("plant_details", {})
                     st.write(f"**Common Names**: {', '.join(details.get('common_names', []))}")
