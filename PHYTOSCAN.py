@@ -13,8 +13,6 @@ if not API_KEY:
 
 # Plant.ID API endpoint
 PLANT_ID_ENDPOINT = "https://api.plant.id/v2/identify"
-max_calls = 5
-seconds = 600 #10 minutes
 
 #Encode Image to base64
 def encode_image(image_file):
@@ -76,7 +74,7 @@ with st.sidebar:
     st.markdown("---")
 
     st.subheader("🕒 Rate Limit")
-    st.write(f"Remaining scans: {max_calls - len(st.session_state['api_call_times'])}/5")
+    st.write(f"Remaining scans: {5 - len(st.session_state['api_call_times'])}/5")
 
 #Image Upload
 uploaded_file = st.file_uploader("Upload a leaf image.",type=["jpg", "png"])
@@ -88,6 +86,8 @@ if uploaded_file:
     b64_image = encode_image(uploaded_file)
 
     #Rate limiting
+    max_calls = 5
+    seconds = 600 #10 minutes
     if "api_call_times" not in st.session_state:
         st.session_state["api_call_times"] = []
 
