@@ -28,7 +28,21 @@ def identify_plant(image_data_b64, api_key):
         "images": [image_data_b64],
         "modifiers": ["crops_fast", "similar_images"],
         "plant_language": "en",
-        "plant_details": ["common_names", "url", "wiki_description",]
+        "plant_details": [
+    "common_names",
+    "url",
+    "wiki_description",
+    "edible_parts",
+    "medicinal_properties",
+    "taxonomy",
+    "growth_habit",
+    "propagation_methods",
+    "distribution",
+    "watering",
+    "sunlight",
+    "soil",
+    "conservation_status"
+]
     }
 
     response = requests.post(PLANT_ID_ENDPOINT, json=payload, headers=headers)
@@ -100,6 +114,27 @@ if uploaded_file:
                     st.write(f"**Common Names**: {', '.join(details.get('common_names', []))}")
                     st.write(f"**Description**: {details.get('wiki_description', {}).get('value', 'No description available.')}")
                     st.write(f"[More Info on Wikipedia]({details.get('url', '#')})")
+                    if details.get("edible_parts"):
+                        st.write(f"**Edible Parts**: {', '.join(details['edible_parts'])}")
+
+                    if details.get("medicinal_properties"):
+                        st.write("**Medicinal Properties**:")
+                        for prop in details["medicinal_properties"]:
+                            st.write(f"- {prop}")
+
+                    if details.get("taxonomy"):
+                        st.write("**Taxonomy**:")
+                        for key, value in details["taxonomy"].items():
+                            st.write(f"- {key.capitalize()}: {value}")
+
+                    for key in ["growth_habit", "propagation_methods", "distribution", "watering", "sunlight", "soil", "conservation_status"]:
+                        value = details.get(key)
+                        if value:
+                            if isinstance(value, list):
+                                st.write(f"**{key.replace('_', ' ').title()}**: {', '.join(value)}")
+                            else:
+                                st.write(f"**{key.replace('_', ' ').title()}**: {value}")
+
 
                     break
 
